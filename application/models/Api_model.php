@@ -13,14 +13,14 @@ class Api_model extends CI_model {
     {
         $this->_client = new Client([
             // 'base_uri' => 'http://192.168.132.75:8080/restfull-api/lab/',
-            'base_uri' => 'http://localhost/restfull-api/lab/',
+            'base_uri' => 'http://localhost/restfull-api/',
             'auth' => ['lis','lis123']
         ]);
     }
     
-    public function getapiranap()
+    public function getapiantrianwa()
     {
-        $response = $this->_client->request('GET','ranap');
+        $response = $this->_client->request('GET','antrian/listantrian');
         $result1 = json_decode($response->getBody()->getContents(),true);
         $result2 = $result1['data'];
         // $result1 = $response->getBody()->getContents();
@@ -29,30 +29,25 @@ class Api_model extends CI_model {
     		{   
     			$row[] = array(
     				'no'=>$no++,
-                    'medical_cd'=>$data['medical_cd'],
-                    'kelas_cd'=>$data['kelas_cd'],
-                    'kelas_nm'=>$data['kelas_nm'],
-                    'ruang_cd'=>$data['ruang_cd'],
-                    'ruang_nm'=>$data['ruang_nm'],
                     'pasien_cd'=>$data['pasien_cd'],
                     'no_rm'=>$data['no_rm'],
                     'pasien_nm'=>$data['pasien_nm'],
-                    'birth_date'=>$data['birth_date'],
-                    'datetime_in'=>$data['datetime_in'],
-                    'address'=>$data['address'],
-                    'dr_cd'=>$data['dr_cd'],
+                    'alamat'=>$data['alamat'],
+                    'medunit_nm'=>$data['medunit_nm'],
                     'dr_nm'=>$data['dr_nm'],
-                    'pasien_type'=>$data['pasien_type']
-    			);                                      
+                    'tgl_daftar'=>$this->app_model->tgl_indo_jam_api($data['tgl_daftar']),
+                    'no_antrian_tpp'=>$data['no_antrian_tpp'],
+                    'no_wa'=>$data['no_wa']
+    			);                                           
     		}
     	$result=array('aaData'=>$row);
     	echo  json_encode($result);
     }
 
-    public function getapirajal($tgl)
+    public function getapiantrianwatgl($tgl)
     {       
-        $response = $this->_client->request('GET','rajal',[
-            'query' =>['date' => $tgl] 
+        $response = $this->_client->request('GET','antrian/listantrian',[
+            'query' =>['tanggal' => $tgl] 
         ]);
         
         $result1 = json_decode($response->getBody()->getContents(),true);
@@ -65,19 +60,16 @@ class Api_model extends CI_model {
     		{   
     			$row[] = array(
     				'no'=>$no++,
-                    'medical_cd'=>$data['medical_cd'],
-                    'medunit_cd'=>$data['medunit_cd'],
-                    'medunit_nm'=>$data['medunit_nm'],
                     'pasien_cd'=>$data['pasien_cd'],
                     'no_rm'=>$data['no_rm'],
                     'pasien_nm'=>$data['pasien_nm'],
-                    'birth_date'=>$data['birth_date'],
-                    'address'=>$data['address'],
-                    'dr_cd'=>$data['dr_cd'],
+                    'alamat'=>$data['alamat'],
+                    'medunit_nm'=>$data['medunit_nm'],
                     'dr_nm'=>$data['dr_nm'],
-                    'queue_no'=>$data['queue_no'],
-                    'proses_st'=>$data['proses_st'],
-                    'pasien_type'=>$data['pasien_type']
+                    // 'tgl_daftar'=>$data['tgl_daftar'],
+                    'tgl_daftar'=>$this->app_model->tgl_indo_jam_api($data['tgl_daftar']),
+                    'no_antrian_tpp'=>$data['no_antrian_tpp'],
+                    'no_wa'=>$data['no_wa']
     			);                                      
     		}
         $result=array('aaData'=>$row);
@@ -89,7 +81,7 @@ class Api_model extends CI_model {
     public function rajaltes()
     {       
         $tgl = '2019-10-18';
-        $response = $this->_client->request('GET','rajal',[
+        $response = $this->_client->request('GET','lab/rajal',[
             'query' =>['date' => $tgl] 
         ]);
         
@@ -130,7 +122,7 @@ class Api_model extends CI_model {
 
     public function getapitindakan()
     {
-        $response = $this->_client->request('GET','tindakan');
+        $response = $this->_client->request('GET','lab/tindakan');
         $result1 = json_decode($response->getBody()->getContents(),true);
         $result2 = $result1['data'];
         // $result1 = $response->getBody()->getContents();
@@ -148,7 +140,7 @@ class Api_model extends CI_model {
 
     public function getapilabhistory($no_rm)
     {
-        $response = $this->_client->request('GET','labhistory',[
+        $response = $this->_client->request('GET','lab/labhistory',[
             'query' =>['no_rm' => $no_rm] 
         ]);
         $result1 = json_decode($response->getBody()->getContents(),true);
@@ -172,7 +164,7 @@ class Api_model extends CI_model {
 
     public function getapitindakanbykunjungan($medical_cd)
     {
-        $response = $this->_client->request('GET','tindakanbykunjungan',[
+        $response = $this->_client->request('GET','lab/tindakanbykunjungan',[
             'query' =>['medical_cd' => $medical_cd] 
         ]);
         $result1 = json_decode($response->getBody()->getContents(),true);
@@ -202,7 +194,7 @@ class Api_model extends CI_model {
 
     public function saveapitindakan($data)
     {
-        $response = $this->_client->request('POST','tindakanbykunjungan',[
+        $response = $this->_client->request('POST','lab/tindakanbykunjungan',[
             'form_params' =>$data 
         ]);
         $result1 = json_decode($response->getBody()->getContents(),true);

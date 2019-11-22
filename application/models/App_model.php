@@ -114,7 +114,32 @@ class App_Model extends CI_Model {
 		$tahun = substr($tgl,0,4);
 		return $tanggal.' '.$bulan.' '.$tahun.'&nbsp;&nbsp;<p><b>'.$jam.'</b></p>';		 
 	}
-    
+	
+	public function tgl_indo_jam_api($tgl){
+		$jam = substr($tgl,11,5);
+		$tgl = substr($tgl,0,10);
+		$tanggal = substr($tgl,8,2);
+		// $bulan = $this->app_model->getBulan(substr($tgl,5,2));
+		$bulan = substr($tgl,5,2);
+		$tahun = substr($tgl,0,4);
+		return $tanggal.'-'.$bulan.'-'.$tahun.'&nbsp;&nbsp;<b>'.$jam.'</b>';		 
+	}
+
+	public function hari_api(){
+		$tanggal = '2015-06-03';
+		$day = date('D', strtotime($tanggal));
+		$dayList = array(
+			'Sun' => 'Minggu',
+			'Mon' => 'Senin',
+			'Tue' => 'Selasa',
+			'Wed' => 'Rabu',
+			'Thu' => 'Kamis',
+			'Fri' => 'Jumat',
+			'Sat' => 'Sabtu'
+		);
+		echo "Tanggal {$tanggal} adalah hari : " . $dayList[$day];
+	}
+
 	public function tgl_bulan($tgl){
 		$jam = substr($tgl,11,10);
 		$tgl = substr($tgl,0,10);

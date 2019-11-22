@@ -23,19 +23,19 @@ class Depan extends CI_Controller {
 		}
 	}
 
-	public function apiranap(){
-		echo $this->Api_model->getapiranap();
+	
+	public function apiantrianwa(){
+		// $tgl = '2019-03-11';
+		// $tgl1= $this->input->post('tanggal');
+		 $tgl = date('Y-m-d');
+		echo $this->Api_model->getapiantrianwatgl($tgl);
 	}
 
-	public function rajaltes(){
-		echo $this->Api_model->rajaltes();
-	}
-
-	public function apirajal(){
+	public function apiantrianwatgl(){
 		// $tgl = '2019-03-11';
 		$tgl1= $this->input->post('tanggal');
 		$tgl = date('Y-m-d', strtotime($tgl1));
-		echo $this->Api_model->getapirajal($tgl);
+		echo $this->Api_model->getapiantrianwatgl($tgl);
 	}
 
 	public function apitindakan(){

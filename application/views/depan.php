@@ -1,12 +1,12 @@
   <script type="text/javascript">
-    function apiranap(){
-        $('#example1').DataTable( {
+    function apiwa(){
+        $('#wahariini').DataTable( {
           "bProcessing"   : true,
           "scrollY"       :  350,
           "scrollX" :        true,
           "scrollCollapse": true,
           "bServerside":true,
-          "sAjaxSource"   : "<?php echo site_url('depan/apiranap');?>" ,
+          "sAjaxSource"   : "<?php echo site_url('depan/apiantrianwa');?>" ,
           "fnServerData": function ( sSource, aoData, fnCallback ) {
             $.ajax( {
             "dataType": 'json',
@@ -16,32 +16,33 @@
           } );
          },
          "columns": [
-        { "data": "no" },
-        { "data": "ruang_nm" },
-        { "data": "medical_cd" },
-        { "data": "no_rm" },
-        { "data": "pasien_nm" },
-        { "data": "address" },
-        { "data": "dr_nm" },
-        { "data": "pasien_type" }
-        ]
+                      { "data": "no" },
+                      { "data": "no_rm" },
+                      { "data": "pasien_nm" },
+                      { "data": "alamat" },
+                      { "data": "medunit_nm" },
+                      { "data": "dr_nm" },
+                      { "data": "tgl_daftar" },
+                      { "data": "no_antrian_tpp" },
+                      { "data": "no_wa" }
+                    ]
          ,
             "footerCallback": function ( row, data, start, end, display ) {  }     
         } );    
       };
 
-      function apirajal(){
-        $('#rajal').dataTable().fnDestroy();
+      function apiwatgl(){
+        $('#watgl').dataTable().fnDestroy();
         var tanggal    = $("#datepicker1").val();
          var string  = "tanggal="+tanggal;
 
-        $('#rajal').DataTable( {
+        $('#watgl').DataTable( {
           "bProcessing"   : true,
           "scrollY"       :  350,
           "scrollX" :        true,
           "scrollCollapse": true,
           "bServerside":true,
-          "sAjaxSource"   : "<?php echo site_url('depan/apirajal');?>" ,
+          "sAjaxSource"   : "<?php echo site_url('depan/apiantrianwatgl');?>" ,
           "fnServerData": function ( sSource, aoData, fnCallback ) {
             $.ajax( {
             "dataType": 'json',
@@ -52,15 +53,16 @@
           } );
          },
          "columns": [
-        { "data": "no" },
-        { "data": "medunit_nm" },
-        { "data": "medical_cd" },
-        { "data": "no_rm" },
-        { "data": "pasien_nm" },
-        { "data": "address" },
-        { "data": "dr_nm" },
-        { "data": "pasien_type" }
-        ]
+                      { "data": "no" },
+                      { "data": "no_rm" },
+                      { "data": "pasien_nm" },
+                      { "data": "alamat" },
+                      { "data": "medunit_nm" },
+                      { "data": "dr_nm" },
+                      { "data": "tgl_daftar" },
+                      { "data": "no_antrian_tpp" },
+                      { "data": "no_wa" }
+                    ]
          ,
             "footerCallback": function ( row, data, start, end, display ) {  }     
         } );    
@@ -86,9 +88,12 @@
               });
           $(".date-picker").datepicker("update", esok);
 
- $('#rajal').DataTable();
-      apiranap();
-    });
+      $('#watgl').DataTable();
+      apiwa();
+      
+      
+
+      });
 </script>
   <div class="row">
    <div class="col-xs-2">
@@ -100,45 +105,62 @@
                       </div>
                     </div>
                     <div class="col-xs-2">
-                      <button type="button" class="btn btn-block btn-primary" onclick="apirajal()">Tampilkan</button>
+                      <button type="button" class="btn btn-block btn-primary" onclick="apiwatgl()">Tampilkan</button>
                     </div>
 </div>
 <div class="box-body">                   
-              <table id="rajal" class="table table-bordered table-striped">
+              <table id="watgl" class="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th width="5%">No</th>
-                    <th width="10%">Ruang</th>
-                    <th width="10%">Medical Cd</th>
-                    <th width="10%">No RM</th>
-                    <th>Nama</th>
-                    <th>Alamat</th>
-                    <th>DPJP</th>
-                    <th>Type Jaminan</th>
+                  <th width="5%">No</th>
+                    <th >No RM</th>
+                    <th >Nama</th>
+                    <th width="20%">Alamat</th>
+                    <th>Klinik</th>
+                    <th>Dokter</th>
+                    <th >Tanggal Daftar</th>
+                    <th width="10%">Antrian TPP</th>
+                    <th>No WA</th>
                   </tr>
                 </thead>
                 <tbody>
                 </tbody>
               </table>
             </div>
- <div class="box-body">                   
-              <table id="example1" class="table table-bordered table-striped">
-                <thead>
-                  <tr>
-                    <th width="5%">No</th>
-                    <th width="10%">Ruang</th>
-                    <th width="10%">Medical Cd</th>
-                    <th width="10%">No RM</th>
-                    <th>Nama</th>
-                    <th>Alamat</th>
-                    <th>DPJP</th>
-                    <th>Type Jaminan</th>
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
-            </div>
+            <br/>
+            <section class="content">
+  <div class="box">
+    <div class="box-header with-border">
+      <i class="fa fa-wheelchair"></i>
+      <h3 class="box-title"> Antrian Pendaftaran WA hari ini <b></b></h3><br/><br/>
+     
+     </div>
+     <div class="box-body">
+
+       <table id="wahariini" class="table table-bordered table-striped">
+        <thead>
+          <tr>
+              <th width="5%">No</th>
+              <th >No RM</th>
+              <th >Nama</th>
+              <th >Alamat</th>
+              <th>Klinik</th>
+              <th>Dokter</th>
+              <th>Tanggal Daftar</th>
+              <th>Antrian TPP</th>
+              <th>No WA</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    <div class="box-footer clearfix">
+
+    </div>
+  </div>
+</section>
+</div>
 
 <!-- <h2>Basic Form</h2>
   <p>Fill the form and submit it.</p>

@@ -1,6 +1,6 @@
 <html >
 <head>
-<title>SIM MUTU</title>
+<title>SIM Pendaftaran WA</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="shortcut icon" href="<?php echo base_url();?>assets/images/home1.png" />
 <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/font-awesome/4.1.0/css/font-awesome.min.css">
@@ -15,7 +15,7 @@
 	<div class="preloader">
 		<div class="box">
 			<h2>Selamat Datang <small>di</small></h2>
-			<h1>SIM MUTU</h1>
+			<h1>Pendaftaran Online WA</h1>
 			<div class="hr"></div>
 			<div class="loading"></div>
 			<img src="<?php echo base_url();?>assets/login/images/login/logo.png" alt="" height="80"/>
@@ -32,9 +32,9 @@
         <div class="login-fg">
 			<div class="login-left"></div>
 			<div class="login-form">
-				<h1>SIM MUTU</h1>
+				<h1>&nbsp;</h1>
 				<div id='notification' class='information'>
-					<h2>Sistem Informasi Manajemen Mutu<br/>
+					<h2>Sistem Pendaftaran Online WA<br/>
 					RSUD Wonosari Gunungkidul</h2>
 					<hr>
 					<p>

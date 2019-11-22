@@ -36,7 +36,7 @@
     <nav class="navbar navbar-static-top">
       <div class="container">
         <div class="navbar-header">
-          <a href="#" class="navbar-brand"><b>Aplikasi Mutu</b><span>&nbsp;&nbsp;</span>RSUD</a>
+          <a href="#" class="navbar-brand"><b>Aplikasi Pendaftaran WA</b><span>&nbsp;&nbsp;</span>RSUD</a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>
           </button>
@@ -66,7 +66,7 @@
 <div class="login-box"> 
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">Login Aplikasi Mutu</p>
+    <p class="login-box-msg">Login Aplikasi Pendaftaran WA</p>
 
     <form action="#" method="post">
       <div class="form-group has-feedback">
@@ -115,7 +115,7 @@
       <div class="pull-right hidden-xs">
         
       </div>
-      <strong>Copyright &copy; 2018 <a href="#">IT RSUD</a>.</strong> Team.
+      <strong>Copyright &copy; 2019 <a href="#">IT RSUD</a>.</strong> Team.
     </div>
     <!-- /.container -->
   </footer>
