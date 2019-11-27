@@ -79,10 +79,10 @@
 	<script type="text/javascript">
     	$(function(){
 	       	$.backstretch([
-		        "<?php echo base_url();?>assets/login/bg/wisata2.jpg",
-		        "<?php echo base_url();?>assets/login/bg/gv.jpg",
-		        "<?php echo base_url();?>assets/login/bg/baron.jpg",
-		        "<?php echo base_url();?>assets/login/bg/indrayanti.jpeg",
+		        "<?php echo base_url();?>assets/login/bg/wa3.jpg",
+		        "<?php echo base_url();?>assets/login/bg/wa.jpg",
+		        // "<?php echo base_url();?>assets/login/bg/baron.jpg",
+		        // "<?php echo base_url();?>assets/login/bg/indrayanti.jpeg",
 		        ],{fade: 2000,duration: 6000
 		    });
 			$(window).load(function(){
