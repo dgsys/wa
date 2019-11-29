@@ -126,7 +126,15 @@ class Api_model extends CI_model {
        echo  json_encode($row);
     }
 
-   
+    public function antrian_wa_cetak($tgl)//ok
+    {
+        $response = $this->_client->request('GET','antrian/listantrian',[
+            'query' =>['tanggal' => $tgl] 
+        ]);
+        
+        $result1 = json_decode($response->getBody()->getContents(),true);
+        return $result1['data'];
+    }
 
    
 }

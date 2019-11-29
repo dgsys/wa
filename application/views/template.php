@@ -66,29 +66,19 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
               <ul class="nav navbar-nav">
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">IKP <span class="caret"></span></a>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Antrian Sekarang <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="<?php echo base_url('kp/add'); ?>">Baru</a></li>
-                    <li><a href="<?php echo base_url('kp'); ?>">List</a></li>
-                    <li><a href="<?php echo base_url('laporan'); ?>">Laporan</a></li>
+                    <li><a href="<?php echo base_url('depan'); ?>">Lihat</a></li>
                   </ul>
-                </li>
+                </li>      
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">PPI <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reservasi <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="<?php echo base_url('ppi/rekap_ppi'); ?>">Pemakaian Alat/Tindakan dan Infeksi</a></li>
-                    <li><a href="<?php echo base_url('Laporan_ppi'); ?>">Laporan</a></li>
+                    <li><a href="<?php echo base_url('reservasi'); ?>">Daftar</a></li>
                   </ul>
-                </li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">K3 <span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="<?php echo base_url('k3/add'); ?>">Baru</a></li>
-                    <li><a href="<?php echo base_url('k3'); ?>">List</a></li>
-                    <li><a href="<?php echo base_url('laporan_k3'); ?>">Laporan</a></li>
-                  </ul>
-                </li>
+                </li>  
+                     
               </ul>
              
         </div>
