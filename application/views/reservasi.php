@@ -1,4 +1,9 @@
   <script type="text/javascript">
+      var seqno;
+      var url;
+      var save_method;
+      var stat;
+
       function apiwatgl() {
           $('#watgl').dataTable().fnDestroy();
           var tanggal = $("#datepicker1").val();
@@ -45,6 +50,9 @@
                   },
                   {
                       "data": "no_wa"
+                  },
+                  {
+                      "data": "aksi"
                   }
               ],
               "footerCallback": function(row, data, start, end, display) {}
@@ -73,7 +81,7 @@
           $(".date-picker").datepicker("update", esok);
           $('#watgl').DataTable();
           jadwal();
-
+          kosongkan();
           $(".angka").keypress(function(e) {
               if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                   //$("#errmsg").html("Digits Only").show().fadeOut("slow");
@@ -178,10 +186,15 @@
       function kosongkan() {
           $('#form_wa')[0].reset();
           tutup();
+          seqno = '';
+          stat = '';
+          save_method = 'add';
+          $("input[name='no_rm']").attr("readonly", false);
       }
 
 
       function save_wa() {
+          //   save_method = 'add';
           var poli = $('#cg').next().find('input').val();
           var pasien_cd = $('#pasien_cd').val();
           var no_wa = $('#no_wa').val();
@@ -203,12 +216,22 @@
           }
           $('#btn_tindakan').text('saving...'); //change button text
           $('#btn_tindakan').attr('disabled', true); //set button disable 
-          url = "<?php echo site_url('reservasi/ajax_add_wa') ?>";
-          var tanggal = $("#datepicker1").val();
-          var $form = $('form');
-          var data = {
-              'tanggal': tanggal
-          };
+          if (save_method == 'add') {
+              url = "<?php echo site_url('reservasi/ajax_add_wa') ?>";
+              var tanggal = $("#datepicker1").val();
+              var $form = $('form');
+              var data = {
+                  'tanggal': tanggal
+              };
+          } else {
+              url = "<?php echo site_url('reservasi/update_wa') ?>";
+              var tanggal = $("#datepicker1").val();
+              var $form = $('form');
+              var data = {
+                  'trx_seqno': seqno,
+                  'status': stat
+              };
+          }
           data = $form.serialize() + '&' + $.param(data);
           $.ajax({
               url: url,
@@ -221,8 +244,12 @@
                       kosongkan();
                       apiwatgl();
                   } else {
-                      var antri = data[0]['no_antrian_tpp'];
-                      var pesan = 'Sukses Reservasi WA untuk :<br>' + 'Tanggal : ' + tanggal + '</br>Nomor Antrian TPP :' + antri;
+                      if (save_method == 'add') {
+                          var antri = data[0]['no_antrian_tpp'];
+                          var pesan = 'Sukses Reservasi WA untuk :<br>' + 'Tanggal : ' + tanggal + '</br>Nomor Antrian TPP :' + antri;
+                      } else {
+                          var pesan = 'Berhasil Merubah data';
+                      };
                       $.messager.show({
                           title: 'INFO',
                           msg: pesan,
@@ -262,6 +289,79 @@
           var tanggal = $("#datepicker1").val();
           window.open('<?php echo site_url('reservasi/antrian_wa_cetak'); ?>/' + tanggal);
       }
+
+      function ubah(id, no_rm, pasien_cd, nama, alamat, dr_cd, unit, wa, ubah) {
+          save_method = 'edit';
+          seqno = id;
+          stat = ubah;
+          buka();
+          $("input[name='no_rm']").attr("readonly", true);
+          $('#form_wa')[0].reset(); // reset form on modals
+          $('.form-group').removeClass('has-error'); // clear error class
+          $('.help-block').empty(); // clear error string
+          $('[name="no_rm"]').val(no_rm);
+          $('[name="pasien_cd"]').val(pasien_cd);
+          $('[name="pasien_nm"]').val(nama);
+          $('[name="alamat"]').val(alamat);
+          $('#cg').combogrid('clear');
+          $('#cg').combogrid('setValue', unit + '/' + dr_cd);
+          $('[name="no_wa"]').val(wa);
+          //   $('[name="seharusnya"]').val(format_angka(seharusnya));
+      }
+
+      function batal(id, batal) {
+          var datanya = {
+              'trx_seqno': id,
+              'status': batal
+          };
+          if (confirm('yakin akan membatalkan jadwal periksa !! ')) {
+              // ajax delete data to database
+              $.ajax({
+                  url: "<?php echo site_url('reservasi/batal_wa') ?>",
+                  type: "POST",
+                  data: datanya,
+                  dataType: "JSON",
+                  success: function(data) {                      
+                          $.messager.show({
+                              title: 'INFO',
+                              msg: 'Pembatalan Sukses',
+                              timeout: 7000,
+                              showType: 'slide',
+                              style: {
+                                  left: '',
+                                  right: 0,
+                                  bottom: ''
+                              }
+                          });                      
+                      kosongkan();
+                      apiwatgl();
+                    //   console.log(data);
+                  },
+                  error: function(jqXHR, textStatus, errorThrown) {
+                        $.messager.show({
+                            title: 'INFO',
+                            msg: 'Gagal Membatalkan',
+                            timeout: 1500,
+                            showType: 'slide',
+                            style: {
+                                left: '',
+                                right: 0,
+                                bottom: ''
+                            }
+                        });
+                      kosongkan();
+                      apiwatgl();
+                    //   console.log(data);
+                  }
+              });
+
+          }
+      }
+
+      function tes() {
+          var poli = $('#cg').next().find('input').val();
+          alert(save_method + ' - ' + seqno + ' - ' + stat);
+      }
   </script>
 
 
@@ -290,7 +390,7 @@
                           </div>
                           <div class="btn-group">
                               <button type="button" class="btn btn-warning" onclick="wa_cetak()"><i class="fa fa-print">&nbsp;</i>Cetak</button>
-                          </div>
+                          </div>                          
                           <!-- <button type="button" class="btn btn-block btn-primary" onclick="apiwatgl()">Tampilkan </button> -->
                       </div>
                   </div>
@@ -301,7 +401,7 @@
                       <div class="form-group">
                           <label for="no_rm" class="col-sm-2 control-label">No RM</label>
                           <div class="col-sm-3">
-                              <input type="text" class="form-control angka" id="no_rm" placeholder="ketik No RM">
+                              <input type="text" class="form-control angka" id="no_rm" name="no_rm" placeholder="ketik No RM">
                           </div>
                           <div class="col-sm-2">
                               <button type="button" class="btn btn-default" onclick="getpasien()">Cari</button>
@@ -368,6 +468,7 @@
                               <th>Tanggal Daftar</th>
                               <th width="10%">Antrian TPP</th>
                               <th>No WA</th>
+                              <th>Aksi</th>
                           </tr>
                       </thead>
                       <tbody>

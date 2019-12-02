@@ -89,10 +89,47 @@ class Reservasi extends CI_Controller
 		// echo json_encode(array("pasien_cd"=>$pasien_cd,"no_wa"=>$no_wa,"tgl_periksa"=>$tgl1,"medunit_cd"=>$medunit_cd));
 	}
 
+	public function update_wa()
+	{
+		$pecah = $this->input->post('cg');
+		$pisah = explode('/', $pecah);
+		$medunit_cd = $pisah[0];
+		$dr_cd = $pisah[1];
+		$no_wa = $this->input->post('no_wa');
+		$trx_seqno = $this->input->post('trx_seqno');
+		$status = $this->input->post('status');
+		// if ($status == 'ubah') {
+		$data = array(
+			'trx_seqno' => $trx_seqno,
+			'status' => $status,
+			'dr_cd' => $dr_cd,
+			'medunit_cd' => $medunit_cd,
+			'no_wa' => $no_wa
+		);
+		// } else {
+		// 	$data = array(
+		// 		'trx_seqno' => $trx_seqno,
+		// 		'status' => $status
+		// 	);
+		// }
+		echo $this->Api_model->update_wa($data);
+	}
+
+	public function batal_wa()
+	{
+		$trx_seqno = $this->input->post('trx_seqno');
+		$status = $this->input->post('status');
+		$data = array(
+			'trx_seqno' => $trx_seqno,
+			'status' => $status
+		);
+		echo $this->Api_model->update_wa($data);
+	}
+
 	public function antrian_wa_cetak($tgl) //ok
 	{
 		$tgl1 = date('Y-m-d', strtotime($tgl));
-		$d['tgl']=$tgl;
+		$d['tgl'] = $tgl;
 		$d['wa'] = $this->Api_model->antrian_wa_cetak($tgl1);
 		$this->load->view('wa_cetak', $d);
 	}
