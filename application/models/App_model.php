@@ -237,7 +237,7 @@ class App_Model extends CI_Model {
 	{
 		$u = $usr;
 		$p = md5($psw);
-		$query="SELECT * from users u left join unit t on u.unit_cd=t.unit_cd where u.user_nm='".$u."' and user_pass='".$p."'";
+		$query="SELECT * from users  where user_nm='".$u."' and user_pass='".$p."'";
 		// $q_cek_login = $this->db->get_where('users', array('user_nm' => $u, 'user_pass' => $p));
 		$q_cek_login = $this->db->query($query);
 		if(count($q_cek_login->result())>0)

@@ -79,7 +79,7 @@
               endDate: esok2
           });
           $(".date-picker").datepicker("update", esok);
-          $('#watgl').DataTable();
+          //   $('#watgl').DataTable();
           jadwal();
           kosongkan();
           $(".angka").keypress(function(e) {
@@ -88,6 +88,7 @@
                   return false;
               }
           });
+          apiwatgl();
       });
 
       function jadwal() {
@@ -245,8 +246,13 @@
                       apiwatgl();
                   } else {
                       if (save_method == 'add') {
-                          var antri = data[0]['no_antrian_tpp'];
-                          var pesan = 'Sukses Reservasi WA untuk :<br>' + 'Tanggal : ' + tanggal + '</br>Nomor Antrian TPP :' + antri;
+                          var st = data[0]['status'];
+                          if (st == 'fail') {
+                              var pesan = 'Pasien <strong> ' + $('#pasien_nm').val() + '</strong> &nbsp; sudah terdaftar pada tanggal ini : <strong>' + $("#datepicker1").val() + ' &nbsp; </strong>';
+                          } else {
+                              var antri = data[0]['no_antrian_tpp'];
+                              var pesan = 'Sukses Reservasi WA untuk :<br>' + 'Tanggal : ' + tanggal + '</br>Nomor Antrian TPP :' + antri;
+                          }
                       } else {
                           var pesan = 'Berhasil Merubah data';
                       };
@@ -264,7 +270,7 @@
                   }
                   kosongkan();
                   apiwatgl();
-                  // console.log(data);
+                  //   console.log(data);
               },
               error: function(jqXHR, textStatus, errorThrown) {
                   $.messager.show({
@@ -321,40 +327,39 @@
                   type: "POST",
                   data: datanya,
                   dataType: "JSON",
-                  success: function(data) {                      
-                          $.messager.show({
-                              title: 'INFO',
-                              msg: 'Pembatalan Sukses',
-                              timeout: 7000,
-                              showType: 'slide',
-                              style: {
-                                  left: '',
-                                  right: 0,
-                                  bottom: ''
-                              }
-                          });                      
+                  success: function(data) {
+                      $.messager.show({
+                          title: 'INFO',
+                          msg: 'Pembatalan Sukses',
+                          timeout: 7000,
+                          showType: 'slide',
+                          style: {
+                              left: '',
+                              right: 0,
+                              bottom: ''
+                          }
+                      });
                       kosongkan();
                       apiwatgl();
-                    //   console.log(data);
+                      //   console.log(data);
                   },
                   error: function(jqXHR, textStatus, errorThrown) {
-                        $.messager.show({
-                            title: 'INFO',
-                            msg: 'Gagal Membatalkan',
-                            timeout: 1500,
-                            showType: 'slide',
-                            style: {
-                                left: '',
-                                right: 0,
-                                bottom: ''
-                            }
-                        });
+                      $.messager.show({
+                          title: 'INFO',
+                          msg: 'Gagal Membatalkan',
+                          timeout: 1500,
+                          showType: 'slide',
+                          style: {
+                              left: '',
+                              right: 0,
+                              bottom: ''
+                          }
+                      });
                       kosongkan();
                       apiwatgl();
-                    //   console.log(data);
+                      //   console.log(data);
                   }
               });
-
           }
       }
 
@@ -390,7 +395,7 @@
                           </div>
                           <div class="btn-group">
                               <button type="button" class="btn btn-warning" onclick="wa_cetak()"><i class="fa fa-print">&nbsp;</i>Cetak</button>
-                          </div>                          
+                          </div>
                           <!-- <button type="button" class="btn btn-block btn-primary" onclick="apiwatgl()">Tampilkan </button> -->
                       </div>
                   </div>

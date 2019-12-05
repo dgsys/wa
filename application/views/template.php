@@ -65,6 +65,10 @@
 
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+          <?php
+            $user_lv=$this->session->userdata('user_lv');
+            if ($user_lv=='1') {
+              ?>
               <ul class="nav navbar-nav">
               <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Antrian Sekarang <span class="caret"></span></a>
@@ -80,7 +84,16 @@
                 </li>  
                      
               </ul>
-             
+            <?php }else{ ?>
+               <ul class="nav navbar-nav">
+               <li class="dropdown">
+                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Antrian Sekarang <span class="caret"></span></a>
+                   <ul class="dropdown-menu" role="menu">
+                     <li><a href="<?php echo base_url('depan'); ?>">Lihat</a></li>
+                   </ul>
+                 </li>      
+                 </ul>
+            <?php }?>
         </div>
         <!-- /.navbar-collapse -->
         <!-- Navbar Right Menu -->

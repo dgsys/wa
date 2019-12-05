@@ -12,11 +12,12 @@ class Depan extends CI_Controller
 		parent::__construct();
 		$this->load->library('pdf');
 		// $this->load->helper('terbilang');
-
 		define('FPDF_FONTPATH', $this->config->item('fonts_path'));
-
-		// $this->load->model('kp/app_model');
 		$this->load->model('Api_model');
+		$logged_in = $this->session->userdata('user_nm');
+		if (!$logged_in) {
+			redirect('login');
+		};
 	}
 
 	public function index()
@@ -46,10 +47,8 @@ class Depan extends CI_Controller
 	{
 		$tgl = date('Y-m-d');
 		$tgl1 = date('d-m-Y', strtotime($tgl));
-		$d['tgl']=$tgl1;
+		$d['tgl'] = $tgl1;
 		$d['wa'] = $this->Api_model->antrian_wa_cetak($tgl);
 		$this->load->view('wa_cetak', $d);
 	}
-
-	
 }

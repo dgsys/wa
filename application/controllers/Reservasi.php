@@ -12,11 +12,12 @@ class Reservasi extends CI_Controller
 		parent::__construct();
 		$this->load->library('pdf');
 		// $this->load->helper('terbilang');
-
 		define('FPDF_FONTPATH', $this->config->item('fonts_path'));
-
-		// $this->load->model('kp/app_model');
 		$this->load->model('Api_model');
+		$logged_in = $this->session->userdata('user_nm');
+		if (!$logged_in) {
+			redirect('login');
+		};
 	}
 
 	public function index()
