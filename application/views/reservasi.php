@@ -66,8 +66,10 @@
           var esok = new Date();
           esok.setDate(esok.getDate() + 1);
           // alert(d);
+          var bts = '<?= $batas; ?>';
           var esok2 = new Date();
-          esok2.setDate(esok2.getDate() + 2);
+          //   console.log(bts);
+          esok2.setDate(esok2.getDate() + parseInt(bts));
           $('.date-picker').datepicker({
               autoclose: true,
               responsive: true,
@@ -166,8 +168,25 @@
               dataType: "JSON",
               success: function(data) {
                   if (!$.trim(data)) {
-                      alert('Data tidak ditemukan');
-                      kosongkan();
+                      // alert('Data tidak ditemukan');
+                     var pesan =  'Data tidak ditemukan.' 
+                    + '</br>Format pendaftaran.' 
+                    + '</br>Rekam Medis/Nama/Klinik/Tanggal Periksa'
+                    +'</br>Contoh : 00111111 / WIBAWA / KLINIK GIGI / 20-12-2019';
+                    $.messager.show({
+                          height : 300,
+                          width : 500,
+                          title: 'INFO',
+                          msg: pesan,
+                          timeout: 10000,
+                          showType: 'slide',
+                          style: {
+                              left: '',
+                              right: 0,
+                              bottom: ''
+                          }
+                      });  
+                  	kosongkan();
                   } else {
                       buka();
                       var alamat = data[0]['alamat'] + ',' + data[0]['kelurahan'] + ',' + data[0]['kec'] + ',' + data[0]['Kota'];
@@ -199,7 +218,9 @@
           var poli = $('#cg').next().find('input').val();
           var pasien_cd = $('#pasien_cd').val();
           var no_wa = $('#no_wa').val();
-          //   var res = poli.split("/");
+          var res = poli.split("-");
+          var pol = res[0];
+          var dr =res[1];
           if (pasien_cd == '') {
               alert("Maaf,Silahkan isi no RM dan Klik tombol cari");
               $('#no_rm').focus();
@@ -247,19 +268,44 @@
                   } else {
                       if (save_method == 'add') {
                           var st = data[0]['status'];
+                          var ket = data[0]['keterangan'];
                           if (st == 'fail') {
-                              var pesan = 'Pasien <strong> ' + $('#pasien_nm').val() + '</strong> &nbsp; sudah terdaftar pada tanggal ini : <strong>' + $("#datepicker1").val() + ' &nbsp; </strong>';
+                              if (ket == 'Penuh') {
+                                   var pesan = 'Pendaftaran tidak berhasil. </br>' + 'Silahkan mendaftar untuk hari berikutnya.' ;
+                              } else {
+                                  var pesan = 'Pasien <strong> ' + $('#pasien_nm').val() + '</strong> &nbsp; </br>sudah terdaftar pada tanggal ini : <strong>' + $("#datepicker1").val() + ' &nbsp; </strong>';
+                              }
                           } else {
                               var antri = data[0]['no_antrian_tpp'];
-                              var pesan = 'Sukses Reservasi WA untuk :<br>' + 'Tanggal : ' + tanggal + '</br>Nomor Antrian TPP :' + antri;
+                               var esti;
+                              if(antri <= 50){
+                                  esti = '07.30 - 08.00';
+                              }else if(antri >50 && antri <=100 ){
+                                    esti = '08.00 -08.30';
+                              }else if(antri >100 && antri <=150 ){
+                                    esti = '08.30 - 09.00';
+                              }else if(antri >150 && antri <=200 ){
+                                    esti = '09.00 - 09.30';
+                              }else if(antri >200 && antri <=250 ){
+                                    esti = '09.30 - 10.00';
+                              }else{
+                                    esti = '10.00 - Selesai';
+                              };
+                              var pesan = 'Pendaftaran berhasil :</br>'+ 'No Rekam Medis :'+ $('#no_rm').val()
+                              +'</br>Nama :'+$('#pasien_nm').val() 
+                              +'</br>Tanggal : ' + tanggal + '</br>Antrian Pendaftaran Nomor :' + antri
+                              +'<br/>Poli :'+ pol + '<br/>Dokter : ' + dr 
+                              + '</br>Perkiraan waktu pelayanan pendaftaran :'+esti;
                           }
                       } else {
                           var pesan = 'Berhasil Merubah data';
                       };
                       $.messager.show({
+                          height : 300,
+                          width : 450,
                           title: 'INFO',
                           msg: pesan,
-                          timeout: 7000,
+                          timeout: 10000,
                           showType: 'slide',
                           style: {
                               left: '',
@@ -270,13 +316,13 @@
                   }
                   kosongkan();
                   apiwatgl();
-                  //   console.log(data);
+                  //   console.log(ket);
               },
               error: function(jqXHR, textStatus, errorThrown) {
                   $.messager.show({
                       title: 'ERROR',
                       msg: 'gagal simpan data',
-                      timeout: 2000,
+                      timeout: 10000,
                       showType: 'slide',
                       style: {
                           left: '',

@@ -22,11 +22,18 @@ class Reservasi extends CI_Controller
 
 	public function index()
 	{
+		$query = $this->db->query("select batas from tbl_batas limit 1");
+		$row = $query->row();
+		if (isset($row)) {
+			$aa= $row->batas;
+		};
+
 		$logged_in = $this->session->userdata('user_nm');
 		if (!$logged_in) {
 			redirect('login');
 		} else {
 			$data = array(
+				'batas' => $aa,
 				'title' => 'Halaman Reservasi Periksa lewat WA',
 				'contents' => 'reservasi'
 			);

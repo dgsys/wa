@@ -15,7 +15,7 @@ class Api_model extends CI_model
     {
         $this->_client = new Client([
             // 'base_uri' => 'http://192.168.132.75:8080/restfull-api/lab/',
-            'base_uri' => 'http://localhost/restfull-api/',
+            'base_uri' => 'http://192.168.132.75:8080/restfull-api/',
             'auth' => ['lis', 'lis123']
         ]);
     }
@@ -149,6 +149,40 @@ class Api_model extends CI_model
         echo  json_encode($row);
     }
 
+	public function getapipoli()
+    {
+        $response = $this->_client->request('GET', 'antrian/poliklinik');
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $result2 = $result1['data'];
+        $no = 1;
+        foreach ($result2 as $data) {
+            $row[] = array(
+                'no' => $no++,
+                'medunit_cd' => $data['medunit_cd'],
+                'medunit_nm' => $data['medunit_nm'],
+                'batas_wa' => $data['batas_wa'],
+                'aksi' => '<div align="center">
+                        <a href="#"" class="btn btn-warning btn-xs" onclick="ubah(' . "'" . $data['medunit_cd'] . "'" . ',' . "'" .  $data['medunit_nm'] . "'" . ',' . "'" .  $data['batas_wa'] . "'" . ')">
+                        <i class="fa fa-edit">&nbsp;</i>Ubah</a>		
+                        </div>'
+            );
+        }
+        $result = array('aaData' => $row);
+        echo  json_encode($result);
+    }
+    
+    public function update_batas_poli($data)
+    {
+        $response = $this->_client->request('PUT', 'antrian/poliklinik', [
+            'form_params' => $data
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $row = array();
+        foreach ($result1 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
+    }
     public function antrian_wa_cetak($tgl) //ok
     {
         $response = $this->_client->request('GET', 'antrian/listantrian', [

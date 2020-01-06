@@ -1,110 +1,155 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Users extends CI_Controller {
+class Users extends CI_Controller
+{
 	var $tbl = 'users';
 	var $tbl_id = 'user_cd';
 
 	public function __construct()
-    {
-        parent::__construct();
-       	$this->load->model('setting_model');	
-    } 
+	{
+		parent::__construct();
+		$this->load->model('setting_model');
+	}
 
 	public function index()
 	{
-		 $logged_in = $this->session->userdata('user_nm');
-        if(!$logged_in) {
-            redirect('login');
-        } else{
-        	if($this->session->userdata('user_lv') !== '1'){
-        		redirect('depan');
-        	}else{
-		$data=array(
-			'title' => 'Seting User',
-			'contents' => 'users',
-			'unit_' => $this->app_model->get_unit(),
-			'group_' => $this->app_model->get_group()
-		);
-		$this->load->view('kp/template',$data);
-		};
+		$logged_in = $this->session->userdata('user_nm');
+		if (!$logged_in) {
+			redirect('login');
+		} else {
+			if ($this->session->userdata('user_lv') !== '1') {
+				redirect('depan');
+			} else {
+				$data = array(
+					'title' => 'Seting User',
+					'contents' => 'users'
+				);
+				$this->load->view('template', $data);
+			};
 		}
 	}
 
-	//Gelombang crud
-	public function user_tabel()//ok
+	public function index_hari()
+	{
+		$logged_in = $this->session->userdata('user_nm');
+		if (!$logged_in) {
+			redirect('login');
+		} else {
+			if ($this->session->userdata('user_lv') !== '1') {
+				redirect('depan');
+			} else {
+				$data = array(
+					'title' => 'Seting Batas Hari',
+					'contents' => 'hari'
+				);
+				$this->load->view('template', $data);
+			};
+		}
+	}
+
+
+	//User
+	public function user_tabel() //ok
 	{
 		echo $this->setting_model->view_user();
 	}
 
 	public function ajax_edit_user($id)
 	{
-		$tbl = 'users';
-		$id_tabel = 'user_cd';
-		$data = $this->setting_model->get_by_id($tbl,$id_tabel,$id);
+		$data = $this->setting_model->get_by_id('users', 'user_cd', $id);
 		echo json_encode($data);
 	}
 
 	public function ajax_add_user()
 	{
-			// $tanggala= $this->input->post('periode');
-			// $periode = date('Y-m-d',strtotime($tanggala));
+		$data = array(
+			'full_nm' => $this->input->post('full_nama'),
+			'user_nm' => $this->input->post('user_nama'),
+			'user_pass' => md5($this->input->post('user_password')),
+			'user_lv' => $this->input->post('user_level')
+		);
 
-			$data = array(
-			'full_nm'=>$this->input->post('full_nama'),
-			'user_nm'=>$this->input->post('user_nama'),
-			'user_pass'=>$this->input->post('user_password'),
-			'user_lv'=>$this->input->post('user_level'),
-			'user_unit'=>$this->input->post('user_unit'),
-			'user_group'=>$this->input->post('user_group')
-			);
-
-			// $tanggal = date('d', strtotime($periode));
-			// $bulan = date('m', strtotime($periode));
-			// $tahun = date('Y', strtotime($periode));
-			// $setoran = $this->input->post('setoran');
-			// $putaran= $this->input->post('putaran');
-			// $gelombang= $this->input->post('gelombang');			
-			// for ($i=1; $i<= $putaran ; $i++) { 
-			// $nextN3 = mktime(0, 0, 0, date($bulan-1)+ $i , date($tanggal) , date($tahun));
-			// $jumlah= $i * $setoran;
-			// $tgl = date("Y-m-d",$nextN3);
-			// $data2  = array(
-			// 	'tgl_putaran' => $tgl,
-			// 	'putaran_ke' => $i,
-			// 	'jumlah_seharusnya' =>$jumlah , 
-			// 	);
-			// $this->app_model->insertData('tbl_putaran',$data2);
-			// }
-			
-		$insert = $this->setting_model->save($data);
+		$insert = $this->setting_model->save('users', $data);
 		echo json_encode(array("status" => TRUE));
 	}
 
 	public function ajax_update_user()
 	{
-		$tanggala= $this->input->post('periode');
-			$periode = date('Y-m-d',strtotime($tanggala));
+		$id_user = $this->input->post('user_cd');
+		if ($this->input->post('user_password') == '') {
 			$data = array(
-			'periode'=>$tanggala,
-			'gelombang'=>$this->input->post('gelombang'),
-			'setoran'=>$this->input->post('setoran'),
-			'putaran'=>$this->input->post('putaran')
+				'full_nm' => $this->input->post('full_nama'),
+				'user_nm' => $this->input->post('user_nama'),
+				'user_lv' => $this->input->post('user_level')
 			);
-		$this->setting_model->update_gelombang(array('id_gelombang' => $this->input->post('id_gelombang')), $data);
+		} else {
+			$data = array(
+				'full_nm' => $this->input->post('full_nama'),
+				'user_nm' => $this->input->post('user_nama'),
+				'user_pass' => md5($this->input->post('user_password')),
+				'user_lv' => $this->input->post('user_level')
+			);
+		};
+		$this->setting_model->update('users', array('user_cd' => $id_user), $data);
 		echo json_encode(array("status" => TRUE));
 	}
 
 	public function ajax_delete_user($id)
 	{
-		$this->setting_model->delete_by_id_gelombang($id);
+		// $kode = $id;
+		$this->setting_model->delete_by_id('users', 'user_cd', $id);
 		echo json_encode(array("status" => TRUE));
 	}
 
-	
+	//hari
+	public function hari_tabel() //ok
+	{
+		echo $this->setting_model->view_hari();
+	}
 
-	function group(){
+	public function ajax_edit_hari($id)
+	{
+		$data = $this->setting_model->get_by_id('tbl_batas', 'id_batas', $id);
+		echo json_encode($data);
+	}
+
+	public function ajax_update_hari()
+	{
+		$id_batas = $this->input->post('id_batas');
+		$data = array(
+			'batas' => $this->input->post('batas')
+		);
+		$this->setting_model->update('tbl_batas', array('id_batas' => $id_batas), $data);
+		echo json_encode(array("status" => TRUE));
+	}
+
+	//group
+	function group()
+	{
 		$this->setting_model->cari_group();
 	}
 
+	public function reset_pass()
+	{
+		$logged_in = $this->session->userdata('user_nm');
+		$data = array(
+			'title' => 'Ganti Password',
+			'contents' => 'reset_pass'
+		);
+		$this->load->view('template', $data);
+	}
+
+	public function proses_reset_pass()
+	{
+		$pass = md5($this->input->post('pass'));
+		$id = $this->session->userdata('user_cd');
+		$data = array(
+			'user_pass' => $pass
+		);
+		$updateData = $this->setting_model->update('users', array('user_cd' => $id), $data);
+		$sess_data['user_pass'] = $pass;
+		$this->session->set_userdata($sess_data);
+		echo json_encode(array("status" => true));
+	}
 }
