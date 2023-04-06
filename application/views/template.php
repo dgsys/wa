@@ -82,6 +82,7 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reservasi <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     <li><a href="<?php echo base_url('reservasi'); ?>"><i class="ace-icon fa fa-edit bigger-130"></i>Daftar</a></li>
+                    <li><a href="<?php echo base_url('pasien'); ?>"><i class="ace-icon fa  fa-user-md bigger-130"></i>Pasien Baru</a></li>
                   </ul>
                 </li>
                 <li class="dropdown">

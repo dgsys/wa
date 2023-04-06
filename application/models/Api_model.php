@@ -14,8 +14,8 @@ class Api_model extends CI_model
     public function __construct()
     {
         $this->_client = new Client([
-            // 'base_uri' => 'http://192.168.132.75:8080/restfull-api/lab/',
-            'base_uri' => 'http://192.168.132.75:8080/restfull-api/',
+            // 'base_uri' => 'http://192.168.132.75:8080/restfull-api/',
+            'base_uri' => 'http://localhost/restfull-api/',
             'auth' => ['lis', 'lis123']
         ]);
     }
@@ -83,7 +83,7 @@ class Api_model extends CI_model
                 'tgl_daftar' => $this->app_model->tgl_indo_jam_api($data['tgl_daftar']),
                 'no_antrian_tpp' => $data['no_antrian_tpp'],
                 'no_wa' => $data['no_wa'],
-                'aksi' =>$aksi
+                'aksi' => $aksi
             );
         }
         $result = array('aaData' => $row);
@@ -117,8 +117,7 @@ class Api_model extends CI_model
         }
         echo  json_encode($row);
     }
-
-
+   
     public function saveapiwa($data)
     {
         $response = $this->_client->request('POST', 'antrian/listantrian', [
@@ -149,7 +148,7 @@ class Api_model extends CI_model
         echo  json_encode($row);
     }
 
-	public function getapipoli()
+    public function getapipoli()
     {
         $response = $this->_client->request('GET', 'antrian/poliklinik');
         $result1 = json_decode($response->getBody()->getContents(), true);
@@ -162,7 +161,7 @@ class Api_model extends CI_model
                 'medunit_nm' => $data['medunit_nm'],
                 'batas_wa' => $data['batas_wa'],
                 'aksi' => '<div align="center">
-                        <a href="#"" class="btn btn-warning btn-xs" onclick="ubah(' . "'" . $data['medunit_cd'] . "'" . ',' . "'" .  $data['medunit_nm'] . "'" . ',' . "'" .  $data['batas_wa'] . "'" . ')">
+                        <a href="#"" class="btn btn-success btn-xs" onclick="ubah(' . "'" . $data['medunit_cd'] . "'" . ',' . "'" .  $data['medunit_nm'] . "'" . ',' . "'" .  $data['batas_wa'] . "'" . ')">
                         <i class="fa fa-edit">&nbsp;</i>Ubah</a>		
                         </div>'
             );
@@ -183,6 +182,8 @@ class Api_model extends CI_model
         }
         echo  json_encode($row);
     }
+
+
     public function antrian_wa_cetak($tgl) //ok
     {
         $response = $this->_client->request('GET', 'antrian/listantrian', [
@@ -191,5 +192,215 @@ class Api_model extends CI_model
 
         $result1 = json_decode($response->getBody()->getContents(), true);
         return $result1['data'];
+    }
+
+    public function getapipropinsi()
+    {
+        $response = $this->_client->request('GET', 'pasien/propinsi', [
+            // 'query' => ['tanggal' => $tgl]
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $result2 = $result1['data'];
+        $row = array();
+        foreach ($result2 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
+    }
+
+    public function getapikabupaten($id)
+    {
+        $response = $this->_client->request('GET', 'pasien/kabupaten', [
+            'query' => ['idprop' => $id]
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $result2 = $result1['data'];
+        $row = array();
+        foreach ($result2 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
+    }
+
+    public function getapikecamatan($id)
+    {
+        $response = $this->_client->request('GET', 'pasien/kecamatan', [
+            'query' => ['idkab' => $id]
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $result2 = $result1['data'];
+        $row = array();
+        foreach ($result2 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
+    }
+
+    public function getapikelurahan($id)
+    {
+        $response = $this->_client->request('GET', 'pasien/kelurahan', [
+            'query' => ['idkec' => $id]
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $result2 = $result1['data'];
+        $row = array();
+        foreach ($result2 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
+    }
+
+    public function getapipasiennik($nik)
+    {
+        $response = $this->_client->request('GET', 'pasien/ceknik', [
+            'query' => ['nik' => $nik]
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $result2 = $result1['data'];
+        $row = array();
+        foreach ($result2 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
+        // var_dump($result2);
+        
+    }
+
+    public function getapiasuransi()
+    {
+        $response = $this->_client->request('GET', 'pasien/asuransi', [
+            // 'query' => ['tanggal' => $tgl]
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $result2 = $result1['data'];
+        $row = array();
+        foreach ($result2 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
+    }
+    public function getapipendidikan()
+    {
+        $response = $this->_client->request('GET', 'pasien/pendidikan', [
+            // 'query' => ['tanggal' => $tgl]
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $result2 = $result1['data'];
+        $row = array();
+        foreach ($result2 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
+    }
+    public function getapipekerjaan()
+    {
+        $response = $this->_client->request('GET', 'pasien/pekerjaan', [
+            // 'query' => ['tanggal' => $tgl]
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $result2 = $result1['data'];
+        $row = array();
+        foreach ($result2 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
+    }
+    public function getapisuku()
+    {
+        $response = $this->_client->request('GET', 'pasien/suku', [
+            // 'query' => ['tanggal' => $tgl]
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $result2 = $result1['data'];
+        $row = array();
+        foreach ($result2 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
+    }
+
+    public function getapiagama()
+    {
+        $response = $this->_client->request('GET', 'pasien/agama', [
+            // 'query' => ['tanggal' => $tgl]
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $result2 = $result1['data'];
+        $row = array();
+        foreach ($result2 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
+    }
+
+    public function getapiidentitas()
+    {
+        $response = $this->_client->request('GET', 'pasien/identitas', [
+            // 'query' => ['tanggal' => $tgl]
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $result2 = $result1['data'];
+        $row = array();
+        foreach ($result2 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
+    }
+
+    public function getapigoldarah()
+    {
+        $response = $this->_client->request('GET', 'pasien/goldarah', [
+            // 'query' => ['tanggal' => $tgl]
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $result2 = $result1['data'];
+        $row = array();
+        foreach ($result2 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
+    }
+
+    public function getapihubungan()
+    {
+        $response = $this->_client->request('GET', 'pasien/hubungan', [
+            // 'query' => ['tanggal' => $tgl]
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $result2 = $result1['data'];
+        $row = array();
+        foreach ($result2 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
+    }
+    
+    public function getapikelas()
+    {
+        $response = $this->_client->request('GET', 'pasien/kelas', [
+            // 'query' => ['tanggal' => $tgl]
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        $result2 = $result1['data'];
+        $row = array();
+        foreach ($result2 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
+    }
+
+    public function saveapipasien($data)
+    {
+        $response = $this->_client->request('POST', 'pasien/pasienadd', [
+            'form_params' => $data
+        ]);
+        $result1 = json_decode($response->getBody()->getContents(), true);
+        // $result2 = $result1['data'];        
+        // return $result1;
+        $row = array();
+        foreach ($result1 as $data) {
+            $row[] = $data;
+        }
+        echo  json_encode($row);
     }
 }
